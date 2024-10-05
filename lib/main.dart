@@ -22,23 +22,32 @@ class LEDControlHomePage extends StatefulWidget {
 }
 
 class _LEDControlHomePageState extends State<LEDControlHomePage> {
-  final String esp32Url = 'http://10.0.1.66'; // Replace with your ESP32 IP
+  final TextEditingController _ipController = TextEditingController();
+  String? esp32Url;
 
   Future<void> _turnOnLED() async {
-    final response = await http.get(Uri.parse('$esp32Url/led/on'));
-    if (response.statusCode == 200) {
-      print('LED Turned ON');
+    if (esp32Url != null) {
+      final response = await http.get(Uri.parse('$esp32Url/led/on'));
+      if (response.statusCode == 200) {
+        print('LED Turned ON');
+      } else {
+        print('Failed to turn on LED');
+      }
     } else {
-      print('Failed to turn on LED');
+      print('Please enter the IP address first.');
     }
   }
 
   Future<void> _turnOffLED() async {
-    final response = await http.get(Uri.parse('$esp32Url/led/off'));
-    if (response.statusCode == 200) {
-      print('LED Turned OFF');
+    if (esp32Url != null) {
+      final response = await http.get(Uri.parse('$esp32Url/led/off'));
+      if (response.statusCode == 200) {
+        print('LED Turned OFF');
+      } else {
+        print('Failed to turn off LED');
+      }
     } else {
-      print('Failed to turn off LED');
+      print('Please enter the IP address first.');
     }
   }
 
@@ -52,6 +61,22 @@ class _LEDControlHomePageState extends State<LEDControlHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _ipController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter ESP32 IP Address',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    esp32Url = 'http://$value'; // Set the entered IP address
+                  });
+                },
+              ),
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: _turnOnLED,
               child: Text('Turn ON LED'),
