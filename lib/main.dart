@@ -2,21 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
-  runApp(LEDControlApp());
+  runApp(const LEDControlApp());
 }
 
 class LEDControlApp extends StatelessWidget {
+  const LEDControlApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ESP32 LED Control',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: LEDControlHomePage(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Colors.indigo,
+        scaffoldBackgroundColor: Colors.lightBlue,
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.white), // Updated text theme
+          bodyMedium: TextStyle(color: Colors.white),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.white),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+          ),
+        ),
+      ),
+      home: const LEDControlHomePage(),
     );
   }
 }
 
 class LEDControlHomePage extends StatefulWidget {
+  const LEDControlHomePage({Key? key}) : super(key: key);
+
   @override
   _LEDControlHomePageState createState() => _LEDControlHomePageState();
 }
@@ -55,7 +82,8 @@ class _LEDControlHomePageState extends State<LEDControlHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ESP32C3 LED Control'),
+        title: const Text('ESP32C3 LED Control'),
+        backgroundColor: Colors.deepPurple,
       ),
       body: Center(
         child: Column(
@@ -65,26 +93,35 @@ class _LEDControlHomePageState extends State<LEDControlHomePage> {
               padding: const EdgeInsets.all(16.0),
               child: TextField(
                 controller: _ipController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter ESP32 IP Address',
                 ),
+                style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
                   setState(() {
-                    esp32Url = 'http://$value'; // Set the entered IP address
+                    esp32Url = 'http://$value';
                   });
                 },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _turnOnLED,
-              child: Text('Turn ON LED'),
+              child: const Text('Turn ON LED'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueGrey,
+                foregroundColor: Colors.black,
+              ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _turnOffLED,
-              child: Text('Turn OFF LED'),
+              child: const Text('Turn OFF LED'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueGrey,
+                foregroundColor: Colors.black,
+              ),
             ),
           ],
         ),
