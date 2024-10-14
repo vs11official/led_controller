@@ -14,8 +14,8 @@ class LEDControlApp extends StatelessWidget {
       title: 'ESP32 LED Control',
       theme: ThemeData(
         brightness: Brightness.dark,
-        primaryColor: Colors.indigo,
-        scaffoldBackgroundColor: Colors.lightBlue,
+        primaryColor: Colors.black,
+        scaffoldBackgroundColor: Colors.black,
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.white), // Updated text theme
           bodyMedium: TextStyle(color: Colors.white),
