@@ -5,7 +5,6 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:led_controller/main.dart';
@@ -13,7 +12,7 @@ import 'package:led_controller/main.dart';
 void main() {
   testWidgets('Test for ESP32 LED Control App', (WidgetTester tester) async {
     // Build the app and trigger a frame.
-    await tester.pumpWidget(LEDControlApp());
+    await tester.pumpWidget(const LEDControlApp());
 
     // Further test code here...
   });

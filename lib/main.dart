@@ -6,7 +6,7 @@ void main() {
 }
 
 class LEDControlApp extends StatelessWidget {
-  const LEDControlApp({Key? key}) : super(key: key);
+  const LEDControlApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class LEDControlApp extends StatelessWidget {
         primaryColor: Colors.black,
         scaffoldBackgroundColor: Colors.black,
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.white), // Updated text theme
+          bodyLarge: TextStyle(color: Colors.white),
           bodyMedium: TextStyle(color: Colors.white),
         ),
         inputDecorationTheme: const InputDecorationTheme(
@@ -42,7 +42,7 @@ class LEDControlApp extends StatelessWidget {
 }
 
 class LEDControlHomePage extends StatefulWidget {
-  const LEDControlHomePage({Key? key}) : super(key: key);
+  const LEDControlHomePage({super.key});
 
   @override
   _LEDControlHomePageState createState() => _LEDControlHomePageState();
@@ -51,38 +51,77 @@ class LEDControlHomePage extends StatefulWidget {
 class _LEDControlHomePageState extends State<LEDControlHomePage> {
   final TextEditingController _ipController = TextEditingController();
   String? esp32Url;
+  bool isLedOn = false;
 
+  // Validate IP address format
+  bool isValidIP(String ip) {
+    final regex = RegExp(r'^(?:\d{1,3}\.){3}\d{1,3}$');
+    return regex.hasMatch(ip);
+  }
+
+  // Show feedback to the user
+  void _showSnackBar(String message, {bool isError = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isError ? Colors.red : Colors.green,
+      ),
+    );
+  }
+
+  // Turn ON LED
   Future<void> _turnOnLED() async {
     if (esp32Url != null) {
-      final response = await http.get(Uri.parse('$esp32Url/led/on'));
-      if (response.statusCode == 200) {
-        print('LED Turned ON');
-      } else {
-        print('Failed to turn on LED');
+      try {
+        final response = await http.get(Uri.parse('$esp32Url/led/on'));
+        if (response.statusCode == 200) {
+          _showSnackBar('LED Turned ON');
+        } else {
+          _showSnackBar('Failed to turn on LED', isError: true);
+        }
+      } catch (e) {
+        _showSnackBar('Error: $e', isError: true);
       }
     } else {
-      print('Please enter the IP address first.');
+      _showSnackBar('Please enter a valid IP address', isError: true);
     }
   }
 
+  // Turn OFF LED
   Future<void> _turnOffLED() async {
     if (esp32Url != null) {
-      final response = await http.get(Uri.parse('$esp32Url/led/off'));
-      if (response.statusCode == 200) {
-        print('LED Turned OFF');
-      } else {
-        print('Failed to turn off LED');
+      try {
+        final response = await http.get(Uri.parse('$esp32Url/led/off'));
+        if (response.statusCode == 200) {
+          _showSnackBar('LED Turned OFF');
+        } else {
+          _showSnackBar('Failed to turn off LED', isError: true);
+        }
+      } catch (e) {
+        _showSnackBar('Error: $e', isError: true);
       }
     } else {
-      print('Please enter the IP address first.');
+      _showSnackBar('Please enter a valid IP address', isError: true);
     }
+  }
+
+  // Toggle LED
+  void _toggleLED() {
+    if (isLedOn) {
+      _turnOffLED();
+    } else {
+      _turnOnLED();
+    }
+    setState(() {
+      isLedOn = !isLedOn;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ESP32C3 LED Control'),
+        title: const Text('ESP32 LED Control'),
         backgroundColor: Colors.deepPurple,
       ),
       body: Center(
@@ -99,29 +138,26 @@ class _LEDControlHomePageState extends State<LEDControlHomePage> {
                 ),
                 style: const TextStyle(color: Colors.white),
                 onChanged: (value) {
-                  setState(() {
-                    esp32Url = 'http://$value';
-                  });
+                  if (isValidIP(value)) {
+                    setState(() {
+                      esp32Url = 'http://$value';
+                    });
+                  } else {
+                    esp32Url = null;
+                  }
                 },
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _turnOnLED,
-              child: const Text('Turn ON LED'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueGrey,
-                foregroundColor: Colors.black,
-              ),
+            Switch(
+              value: isLedOn,
+              onChanged: (value) {
+                _toggleLED();
+              },
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _turnOffLED,
-              child: const Text('Turn OFF LED'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueGrey,
-                foregroundColor: Colors.black,
-              ),
+            Text(
+              isLedOn ? 'LED is ON' : 'LED is OFF',
+              style: const TextStyle(fontSize: 18, color: Colors.white),
             ),
           ],
         ),
