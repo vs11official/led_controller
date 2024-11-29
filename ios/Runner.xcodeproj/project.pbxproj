@@ -10,7 +10,7 @@
 		05F6EC732CF8974300C6A363 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91A94D9D488FD879BB7B19D4 /* Pods_Runner.framework */; };
 		05F6EC742CF8974300C6A363 /* Pods_Runner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 91A94D9D488FD879BB7B19D4 /* Pods_Runner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		05F6EC752CF89A2100C6A363 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 769D1CBD53DBAE171E360583 /* Pods_RunnerTests.framework */; };
-		05F6EC762CF89A2100C6A363 /* Pods_RunnerTests.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 769D1CBD53DBAE171E360583 /* Pods_RunnerTests.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		05F6EC762CF89A2100C6A363 /* Pods_RunnerTests.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 769D1CBD53DBAE171E360583 /* Pods_RunnerTests.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
